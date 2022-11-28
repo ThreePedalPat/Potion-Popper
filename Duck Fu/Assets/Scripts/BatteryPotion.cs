@@ -6,14 +6,6 @@ public class BatteryPotion : Potion
 {
     [SerializeField] public float timeTilChargeOver = 3;
 
-    private void Awake()
-    {
-        playerRef = GameObject.FindWithTag("Player");
-        healthScript = playerRef.GetComponent<PlayerControls>();
-        spawnerRef = GameObject.FindWithTag("Spawn Manager");
-        spawnScript = spawnerRef.GetComponent<Spawner>();
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == ("Player"))
@@ -23,6 +15,20 @@ public class BatteryPotion : Potion
             healthScript.batteryPowered = true;
             healthScript.batteryPoweredTimeStamp = Time.time + timeTilChargeOver;
             healthScript.potionsCaught += 1;
+            if (healthScript.potionsCaught >= 10)
+            {
+                healthScript.scoreMultiplier = 1.1f;
+
+                if (healthScript.potionsCaught >= 20)
+                {
+                    healthScript.scoreMultiplier = 1.3f;
+
+                    if (healthScript.potionsCaught > 29)
+                    {
+                        healthScript.scoreMultiplier = 1.5f;
+                    }
+                }
+            }
             spawnScript.spawnedEnemies -= 1;
             Destroy(gameObject);
         }
@@ -30,6 +36,7 @@ public class BatteryPotion : Potion
         if (collision.gameObject.tag == "Ground")
         {
             healthScript.potionsCaught = 0;
+            healthScript.scoreMultiplier = 1;
             spawnScript.spawnedEnemies -= 1;
             Destroy(gameObject);
         }

@@ -21,11 +21,12 @@ public class PlayerControls : MonoBehaviour
     public float batteryPoweredTimeStamp;
     public float batteryPoweredLength = 3;
 
-    public float playerHealth;
-    [SerializeField] public float playerMaxHealth = 100;
-    public int playerScore;
+    public int playerHealth;
+    [SerializeField] public int playerMaxHealth = 100;
+    public float playerScore;
 
-    [SerializeField] private float speed;
+    [SerializeField] private float droidSpeed = 35;
+    [SerializeField] private float pcSpeed = 25;
 
     public Spawner spawnScript;
     public GameObject spawnerRef;
@@ -35,6 +36,8 @@ public class PlayerControls : MonoBehaviour
 
     private Rigidbody2D body;
 
+    public float timer;
+
     public bool resilient = false;
     public bool tough = false;
     public bool poppin = false;
@@ -43,6 +46,7 @@ public class PlayerControls : MonoBehaviour
 
     public float potionsCaught;
     public float highScore = 0;
+    public float scoreMultiplier = 1;
 
     public bool newHighScore;
 
@@ -70,6 +74,7 @@ public class PlayerControls : MonoBehaviour
         playerHealth = playerMaxHealth;
         healthBarUI.SetMaxHealth(playerMaxHealth);
         newHighScore = false;
+        scoreMultiplier = 1;
     }
 
     // Update is called once per frame
@@ -87,20 +92,28 @@ public class PlayerControls : MonoBehaviour
 
         if (playerHealth > 0 && !gameIsPaused && !batteryPowered)
         {
-            if (resilient)
+            timer++;
+            if(timer >= 10)
             {
-                playerHealth -= 0.03f;
-                healthBarUI.SetHealth(playerHealth);
-            }
-            else
-            {
-                playerHealth -= 0.05f;
-                healthBarUI.SetHealth(playerHealth);
+                if(resilient && timer >= 20)
+                {
+                    playerHealth -= 1;
+                    healthBarUI.SetHealth(playerHealth);
+                    timer = 0;
+                }
+                else
+                {
+                    playerHealth -= 1;
+                    healthBarUI.SetHealth(playerHealth);
+                    timer = 0;
+                }
             }
         }
-        else if (playerHealth <= 0)
+        
+        if (playerHealth <= 0)
         {
             gameOverCanvas.enabled = true;
+            gameIsPaused = true;
             Time.timeScale = 0;
         }
 
@@ -116,9 +129,7 @@ public class PlayerControls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            storeCanvas.enabled = true;
-            storeScript.storeOpen = true;
-            gameIsPaused = true;
+            storeScript.OpenStore();
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && storeScript.storeOpen)
@@ -137,10 +148,14 @@ public class PlayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!gameIsPaused)
+        if(!gameIsPaused && Input.GetAxis("Horizontal") != 0)
+        { 
+           body.velocity = new Vector2(Input.GetAxis("Horizontal") * pcSpeed, body.velocity.y);   
+        }
+        else if(!gameIsPaused)
         {
-            body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
-        } 
+            body.velocity = new Vector2(Input.acceleration.x * droidSpeed, body.velocity.y);
+        }
     }
 
     public void UnpauseGame()
