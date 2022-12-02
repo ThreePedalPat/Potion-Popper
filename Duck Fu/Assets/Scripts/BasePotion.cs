@@ -44,6 +44,7 @@ public class BasePotion : Potion
                     }
                 }
                 spawnScript.spawnedEnemies -= 1;
+                spawnScript.alreadyDone = false;
                 Destroy(gameObject);
             }
             else if (healthScript.poppin)
@@ -79,6 +80,7 @@ public class BasePotion : Potion
                     }
                 }
                 spawnScript.spawnedEnemies -= 1;
+                spawnScript.alreadyDone = false;
                 Destroy(gameObject);
             }
         }
@@ -88,6 +90,7 @@ public class BasePotion : Potion
             healthScript.potionsCaught = 0;
             healthScript.scoreMultiplier = 1;
             spawnScript.spawnedEnemies -= 1;
+            spawnScript.alreadyDone = false;
             Destroy(gameObject);
         }
     }

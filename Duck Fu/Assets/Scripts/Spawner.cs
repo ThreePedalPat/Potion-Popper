@@ -11,12 +11,16 @@ public class Spawner : MonoBehaviour
     public GameObject playerRef;
 
     public float timeToSpawn;
-    public float timeStamp;
+    public float spawnElapsed;
     public float spawnedEnemies;
     public float spawnedTotal;
+    public float secondsToSpawn = 1;
+    public float baseDifficultyPoint = 30;
 
     public int randomNumber;
     public int randomPotion;
+
+    public bool alreadyDone;
 
     public PlayerControls healthScript;
 
@@ -24,37 +28,70 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        spawnedEnemies = 0;
+        spawnedTotal = 0;
+        randomNumber = 0;
+        secondsToSpawn = 1;
+        alreadyDone = false;
     }
 
     private void Awake()
     {
         playerRef = GameObject.FindWithTag("Player");
         healthScript = playerRef.GetComponent<PlayerControls>();
-        timeStamp = Time.time + 2;
-        spawnedEnemies = 0;
-        spawnedTotal = 0;
-        randomNumber = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if (timeStamp <= Time.time && spawnedEnemies < 1 && !healthScript.gameIsPaused)
+        if(!healthScript.gameIsPaused)
+        {
+            spawnElapsed += Time.deltaTime;
+        }
+
+        if(spawnedTotal >= baseDifficultyPoint)
+        {
+            secondsToSpawn = 2;
+            if(spawnedTotal >= baseDifficultyPoint + 20)
+            {
+                secondsToSpawn = 3;
+                if (spawnedTotal >= baseDifficultyPoint + 40)
+                {
+                    secondsToSpawn = 4;
+                    if (spawnedTotal >= baseDifficultyPoint + 60)
+                    {
+                        secondsToSpawn = 5;
+                        if (spawnedTotal >= baseDifficultyPoint + 80)
+                        {
+                            secondsToSpawn = 6;
+                            if (spawnedTotal >= baseDifficultyPoint + 100)
+                            {
+                                secondsToSpawn = 7;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (spawnElapsed >= secondsToSpawn && !healthScript.gameIsPaused && !alreadyDone)
         {
             RollANumber();
             if(randomNumber == 1)
             {
                 SpawnRight();
+                alreadyDone = true;
             }
             if (randomNumber == 2)
             {
                 SpawnMid();
+                alreadyDone = true;
             }
             if (randomNumber == 3)
             {
                 SpawnLeft();
+                alreadyDone = true;
             }
 
         }
@@ -64,32 +101,29 @@ public class Spawner : MonoBehaviour
     public void SpawnLeft()
     {
         RollAPotion();
+        spawnElapsed = 0;
         if (randomPotion == 1)
         {
             Instantiate(enemyPrefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 2)
         {
             Instantiate(enemy2Prefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 3)
         {
             Instantiate(enemy3Prefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 4)
         {
             Instantiate(enemy4Prefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
     }
@@ -97,32 +131,29 @@ public class Spawner : MonoBehaviour
     public void SpawnMid()
     {
         RollAPotion();
+        spawnElapsed = 0;
         if (randomPotion == 1)
         {
             Instantiate(enemyPrefab, new Vector3(0f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 2)
         {
             Instantiate(enemy2Prefab, new Vector3(0f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 3)
         {
             Instantiate(enemy3Prefab, new Vector3(0f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 4)
         {
             Instantiate(enemy4Prefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
     }
@@ -130,32 +161,29 @@ public class Spawner : MonoBehaviour
     public void SpawnRight()
     {
         RollAPotion();
+        spawnElapsed = 0;
         if (randomPotion == 1)
         {
             Instantiate(enemyPrefab, new Vector3(6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 2)
         {
             Instantiate(enemy2Prefab, new Vector3(6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 3)
         {
             Instantiate(enemy3Prefab, new Vector3(6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
         else if (randomPotion == 4)
         {
             Instantiate(enemy4Prefab, new Vector3(-6.6f, 3.6f, 0f), Quaternion.identity);
             spawnedEnemies++;
-            timeStamp = Time.time + 2;
             spawnedTotal += 1;
         }
     }

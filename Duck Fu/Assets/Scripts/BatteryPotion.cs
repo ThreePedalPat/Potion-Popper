@@ -11,10 +11,12 @@ public class BatteryPotion : Potion
         if (collision.gameObject.tag == ("Player"))
         {
             healthScript.playerHealth = healthScript.playerMaxHealth;
-            healthScript.healthBarUI.SetHealth(healthScript.playerHealth);
+            healthScript.healthBarUI.SetHealth(healthScript.playerHealth, healthScript.playerMaxHealth);
             healthScript.batteryPowered = true;
             healthScript.batteryPoweredTimeStamp = Time.time + timeTilChargeOver;
             healthScript.potionsCaught += 1;
+            healthScript.healthElapsed = 0;
+            spawnScript.alreadyDone = false;
             if (healthScript.potionsCaught >= 10)
             {
                 healthScript.scoreMultiplier = 1.1f;
@@ -38,6 +40,7 @@ public class BatteryPotion : Potion
             healthScript.potionsCaught = 0;
             healthScript.scoreMultiplier = 1;
             spawnScript.spawnedEnemies -= 1;
+            spawnScript.alreadyDone = false;
             Destroy(gameObject);
         }
 

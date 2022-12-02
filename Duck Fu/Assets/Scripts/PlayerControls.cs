@@ -36,13 +36,19 @@ public class PlayerControls : MonoBehaviour
 
     private Rigidbody2D body;
 
-    public float timer;
+    public float healthElapsed; //health timer
+    public float elapsed; //score timer
+    public float scorePerSecond;
 
     public bool resilient = false;
     public bool tough = false;
     public bool poppin = false;
+    public bool investor = false;
+    public bool supplier = false;
+    public bool embezzler = false;
 
-    public float howFastYouDie = 0.05f;
+    public int howFastYouDie = 12;
+    public int howSlowYouDie = 6;
 
     public float potionsCaught;
     public float highScore = 0;
@@ -90,25 +96,46 @@ public class PlayerControls : MonoBehaviour
             UnpauseGame();
         }
 
+        if(resilient)
+        {
+            storeScript.resButton.interactable = false;
+        }
+
+        if (poppin)
+        {
+            storeScript.poppinButton.interactable = false;
+        }
+
+        if (tough)
+        {
+            storeScript.toughButton.interactable = false;
+        }
+
         if (playerHealth > 0 && !gameIsPaused && !batteryPowered)
         {
-            timer++;
-            if(timer >= 10)
+            healthBarUI.SetHealth(playerHealth, playerMaxHealth);
+            healthElapsed += Time.deltaTime;
+            if(healthElapsed >= 1)
             {
-                if(resilient && timer >= 20)
+                if(resilient && healthElapsed >= 1)
                 {
-                    playerHealth -= 1;
-                    healthBarUI.SetHealth(playerHealth);
-                    timer = 0;
+                    playerHealth -= howSlowYouDie;
+                    healthElapsed = 0;
                 }
                 else
                 {
-                    playerHealth -= 1;
-                    healthBarUI.SetHealth(playerHealth);
-                    timer = 0;
+                    playerHealth -= howFastYouDie;
+                    healthElapsed = 0;
                 }
             }
         }
+
+        if(!gameIsPaused && playerHealth > 0)
+        {
+            elapsed += Time.deltaTime;
+            ScorePerSecond();
+        }
+
         
         if (playerHealth <= 0)
         {
@@ -132,13 +159,6 @@ public class PlayerControls : MonoBehaviour
             storeScript.OpenStore();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && storeScript.storeOpen)
-        {
-            storeCanvas.enabled = false;
-            storeScript.storeOpen = false;
-            gameIsPaused = false;
-        }
-
         if(newHighScore)
         {
             PlayerPrefs.SetFloat("HighScore", highScore);
@@ -154,7 +174,11 @@ public class PlayerControls : MonoBehaviour
         }
         else if(!gameIsPaused)
         {
-            body.velocity = new Vector2(Input.acceleration.x * droidSpeed, body.velocity.y);
+            if(Input.acceleration.x >= 0.08 || Input.acceleration.x <= -0.08)
+            {
+                body.velocity = new Vector2(Input.acceleration.x * droidSpeed, body.velocity.y);
+            }
+
         }
     }
 
@@ -171,7 +195,14 @@ public class PlayerControls : MonoBehaviour
         gameIsPaused = true;
     }
 
-    
+    public void ScorePerSecond()
+    {
+        if(elapsed >= 1)
+        {
+            playerScore += scorePerSecond;
+            elapsed = 0;
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
