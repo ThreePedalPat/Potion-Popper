@@ -26,6 +26,12 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    public void PlayHardMode()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        Time.timeScale = 1;
+
+    }
     public void QuitGame()
     {
         Debug.Log("Quit!");

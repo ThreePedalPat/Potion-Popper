@@ -168,6 +168,11 @@ public class PlayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(Input.GetKey(KeyCode.Space))
+        {
+            body.AddForce(new Vector2(0, 200));
+        }
+
         if(!gameIsPaused && Input.GetAxis("Horizontal") != 0)
         { 
            body.velocity = new Vector2(Input.GetAxis("Horizontal") * pcSpeed, body.velocity.y);   
@@ -178,7 +183,6 @@ public class PlayerControls : MonoBehaviour
             {
                 body.velocity = new Vector2(Input.acceleration.x * droidSpeed, body.velocity.y);
             }
-
         }
     }
 
