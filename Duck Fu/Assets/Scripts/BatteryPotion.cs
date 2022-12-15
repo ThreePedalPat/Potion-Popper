@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BatteryPotion : Potion
 {
@@ -37,6 +38,7 @@ public class BatteryPotion : Potion
 
         if (collision.gameObject.tag == "Ground")
         {
+            audioScript.Play("PotionBreak");
             healthScript.potionsCaught = 0;
             healthScript.scoreMultiplier = 1;
             spawnScript.spawnedEnemies -= 1;

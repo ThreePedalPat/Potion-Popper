@@ -87,6 +87,7 @@ public class BasePotion : Potion
 
         if (collision.gameObject.tag == "Ground")
         {
+            audioScript.Play("PotionBreak");
             healthScript.potionsCaught = 0;
             healthScript.scoreMultiplier = 1;
             spawnScript.spawnedEnemies -= 1;

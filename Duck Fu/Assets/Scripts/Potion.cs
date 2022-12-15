@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Potion : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class Potion : MonoBehaviour
     public Spawner spawnScript;
     public GameObject spawnerRef;
 
+    public GameObject audioRef;
+    public AudioManager audioScript;
+
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -20,6 +25,9 @@ public class Potion : MonoBehaviour
         spawnerRef = GameObject.FindWithTag("Spawn Manager");
         spawnScript = spawnerRef.GetComponent<Spawner>();
         body = GetComponent<Rigidbody2D>();
+        audioRef = GameObject.FindWithTag("AudioManager");
+        audioScript = audioRef.GetComponent<AudioManager>();
+
     }
 
     // Update is called once per frame
@@ -35,5 +43,5 @@ public class Potion : MonoBehaviour
         }
     }
 
-
+    
 }
