@@ -43,6 +43,7 @@ public class PlayerControls : MonoBehaviour
     public bool resilient = false;
     public bool tough = false;
     public bool poppin = false;
+    public bool SSS = false;
     public bool investor = false;
     public bool supplier = false;
     public bool embezzler = false;

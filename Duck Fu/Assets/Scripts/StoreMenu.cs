@@ -13,8 +13,10 @@ public class StoreMenu : MonoBehaviour
     public Button invButton;
     public Button supButton;
     public Button embButton;
+    public Button sssButton;
 
     public float potPopUpgradeCost = 1000;
+    public float SSSUpgradeCost = 5000;
     public float toughnessUpgradeCost = 1000;
     public float resilienceUpgradeCost = 1000;
     public float invUpgradeCost = 1000;
@@ -23,6 +25,7 @@ public class StoreMenu : MonoBehaviour
     public float invUpgradeAmount = 1;
     public float supUpgradeAmount = 10;
     public float embUpgradeAmount = 25;
+    public float sssUpgradeSpawnRate = 0.4f;
 
     public GameObject playerRef;
     public GameObject resButtonRef;
@@ -33,6 +36,8 @@ public class StoreMenu : MonoBehaviour
     public GameObject invButtonRef;
     public GameObject supButtonRef;
     public GameObject embButtonRef;
+    public GameObject sssButtonRef;
+    public GameObject spawnerRef;
 
     public Canvas pauseCanvas;
     public Canvas storeCanvas;
@@ -47,6 +52,8 @@ public class StoreMenu : MonoBehaviour
 
     public CheatMenu cheats;
 
+    public Spawner spawnScript;
+
     public bool storeOpen;
 
     private void Awake()
@@ -60,6 +67,8 @@ public class StoreMenu : MonoBehaviour
         invButtonRef = GameObject.FindWithTag("invButton");
         supButtonRef = GameObject.FindWithTag("supButton");
         embButtonRef = GameObject.FindWithTag("embButton");
+        sssButtonRef = GameObject.FindWithTag("sssButton");
+        spawnerRef = GameObject.FindWithTag("Spawn Manager");
 
         player = playerRef.GetComponent<PlayerControls>();
         cheats = cheatMenuRef.GetComponent<CheatMenu>();
@@ -69,8 +78,10 @@ public class StoreMenu : MonoBehaviour
         invButton = invButtonRef.GetComponent<Button>();
         supButton = supButtonRef.GetComponent<Button>();
         embButton = embButtonRef.GetComponent<Button>();
+        sssButton = sssButtonRef.GetComponent<Button>();
         pauseCanvas = pauseMenuRef.GetComponent<Canvas>();
         storeCanvas = GetComponent<Canvas>();
+        spawnScript = spawnerRef.GetComponent<Spawner>();
 
     }
 
@@ -143,6 +154,26 @@ public class StoreMenu : MonoBehaviour
             player.poppin = true;
             poppinButton.interactable = false;
             battPot.timeTilChargeOver = 5;
+        }
+    }
+
+    public void SSSUpgrade()
+    {
+        if(!cheats.gotMoney)
+        {
+            if (player.playerScore >= SSSUpgradeCost)
+            {
+                player.playerScore -= SSSUpgradeCost;
+                player.SSS = true;
+                sssButton.interactable = false;
+                spawnScript.secondsToSpawn = sssUpgradeSpawnRate;
+            }
+        }
+        else
+        {
+            player.SSS = true;
+            sssButton.interactable = false;
+            spawnScript.secondsToSpawn = sssUpgradeSpawnRate;
         }
     }
 

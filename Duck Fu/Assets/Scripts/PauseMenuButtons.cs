@@ -29,6 +29,12 @@ public class PauseMenuButtons : MonoBehaviour
         
     }
 
+    public void PauseGame()
+    {
+        pauseCanvas.enabled = true;
+        controlScript.gameIsPaused = true;
+    }
+
 
     public void MainMenuButton()
     {

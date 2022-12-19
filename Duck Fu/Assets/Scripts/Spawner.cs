@@ -49,22 +49,22 @@ public class Spawner : MonoBehaviour
             spawnElapsed += Time.deltaTime;
         }
 
-        if(spawnedTotal >= baseDifficultyPoint)
+        if(spawnedTotal >= baseDifficultyPoint && !healthScript.SSS && spawnedEnemies > 1)
         {
             secondsToSpawn = 2;
-            if(spawnedTotal >= baseDifficultyPoint + 20)
+            if(spawnedTotal >= baseDifficultyPoint + 20 && !healthScript.SSS && spawnedEnemies > 1)
             {
                 secondsToSpawn = 3;
-                if (spawnedTotal >= baseDifficultyPoint + 40)
+                if (spawnedTotal >= baseDifficultyPoint + 40 && !healthScript.SSS && spawnedEnemies > 1)
                 {
                     secondsToSpawn = 4;
-                    if (spawnedTotal >= baseDifficultyPoint + 60)
+                    if (spawnedTotal >= baseDifficultyPoint + 60 && !healthScript.SSS && spawnedEnemies > 1)
                     {
                         secondsToSpawn = 5;
-                        if (spawnedTotal >= baseDifficultyPoint + 80)
+                        if (spawnedTotal >= baseDifficultyPoint + 80 && !healthScript.SSS && spawnedEnemies > 1)
                         {
                             secondsToSpawn = 6;
-                            if (spawnedTotal >= baseDifficultyPoint + 100)
+                            if (spawnedTotal >= baseDifficultyPoint + 100 && !healthScript.SSS && spawnedEnemies > 1)
                             {
                                 secondsToSpawn = 7;
                             }
@@ -75,23 +75,23 @@ public class Spawner : MonoBehaviour
             }
         }
 
-        if (spawnElapsed >= secondsToSpawn && !healthScript.gameIsPaused && !alreadyDone)
+        if (spawnElapsed >= secondsToSpawn && !healthScript.gameIsPaused)
         {
             RollANumber();
             if(randomNumber == 1)
             {
                 SpawnRight();
-                alreadyDone = true;
+
             }
             if (randomNumber == 2)
             {
                 SpawnMid();
-                alreadyDone = true;
+
             }
             if (randomNumber == 3)
             {
                 SpawnLeft();
-                alreadyDone = true;
+
             }
 
         }
